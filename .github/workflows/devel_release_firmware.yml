@@ -2,10 +2,9 @@ name: devel_release_firmware
 
 on:
   push:
-    branches: firmware
-    #paths:
-      #- 'firmware/unofficial/trigger.txt'
-      #- 'firmware/unofficial/tasmota-fullrules.bin'
+    branches: gh_actions
+    paths:
+      - 'trigger_devel.txt'
 
 jobs:
 
