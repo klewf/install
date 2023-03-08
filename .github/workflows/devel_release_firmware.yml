@@ -1,0 +1,147 @@
+name: devel_release_firmware
+
+on:
+  workflow_dispatch:
+  push:
+    branches: firmware
+    paths:
+      - 'firmware/unofficial/tasmota-fullrules.bin'
+
+jobs:
+
+  save_repo:
+    needs: copycat
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: firmware
+    - name: Build commit message for repo
+      run: |
+        rm release-info.txt
+        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
+        echo "$tas_com_tmp" >> release-info.txt
+    - name: Save repo as artifact
+      run: |
+        rsync -avR ./ artifact
+        rm -rf artifact/.git
+    - name: Upload repo as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: firmware
+        path: artifact
+
+  empty_branch:
+    needs: save_repo
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: firmware
+    - name: Create new empty firmware branch
+      run: |
+        git config --global user.email github-actions@github.com
+        git config --global user.name github-actions
+        git switch --orphan new_branch                                 # create empty branch
+        git commit --allow-empty -m "Initial commit"
+        git push -u origin new_branch                                  # push empty branch in repo
+        git switch firmware
+        git reset --hard new_branch                                    # reset firmware branch
+        git push origin firmware -f
+        git push origin --delete new_branch                            # delete empty_branch
+
+  release_restore:
+    needs: empty_branch
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.MASTER_ACCESS_TOKEN }}
+        ref: firmware
+    - name: Build commit message
+      run: |
+        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
+        echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
+    - name: Download repo artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: firmware
+        path: artifact
+    - name: Display structure of downloaded files
+      run: |
+        ls -R
+    - name: Move files back
+      run: |
+        rsync -avR artifact/./ ./
+        rm -rf artifact
+    - name: Release devel and unofficial firmwares
+      uses: jason2866/action-gh-release@v1.2
+      with:
+        tag_name: ${{ github.run_number }}
+        body_path: release-info.txt
+        prerelease: true
+        files: |
+          release-info.txt
+          firmware/development/*
+          firmware/unofficial/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
+    - name: Push artifact content in branch firmware
+      run: |
+        git config user.email github-actions@github.com
+        git config user.name "github-actions"
+        git add -A
+        git commit --allow-empty -m "${{ env.tas_com }}"
+        git push origin firmware -f
+
+  genManifestpy:
+    needs: release_restore
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: firmware
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
+    - name: Run genManifest.py
+      run: |
+        python genManifest.py
+    - name: Transfer the changed Manifest into the repository
+      run: |
+        git config user.email github-actions@github.com
+        git config user.name "github-actions"
+        git add -f ./*
+        git commit --allow-empty -m "update manifest"
+        git push origin firmware -f
+
+  deploy:
+    needs: genManifestpy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: firmware
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

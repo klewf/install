@@ -1,0 +1,129 @@
+name: release_release_firmware
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+    paths:
+      - 'firmware/release/tasmota.bin'
+
+jobs:
+  
+  release_firmware:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build commit message
+      run: |
+        rm release-info.txt
+        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
+        echo "$tas_com_tmp" >> release-info.txt
+    - name: Release
+      uses: jason2866/action-gh-release@v1.2
+      with:
+        tag_name: ${{ github.run_number }}
+        body_path: release-info.txt
+        prerelease: false
+        files: |
+          release-info.txt
+          firmware/release/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
+    - name: Move latest release firmwares in artifact folder
+      run: |
+        rsync -avR ./ artifact
+        rm -rf artifact/.git
+    - name: Upload latest firmware artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: firmware
+        path: artifact
+
+  empty_branch:
+    needs: release_firmware
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Create new empty main branch
+      run: |
+        git config --global user.email github-actions@github.com
+        git config --global user.name github-actions
+        git switch --orphan new_branch                                 # create empty branch
+        git commit --allow-empty -m "Initial commit"
+        git push -u origin new_branch                                  # push empty branch in repo
+        git switch main
+        git reset --hard new_branch                                    # reset main branch
+        git push origin main -f
+        git push origin --delete new_branch                            # delete empty_branch
+
+  upload_firmware:
+    needs: empty_branch
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.MASTER_ACCESS_TOKEN }}
+    - name: Build commit message
+      run: |
+        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
+        echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
+    - name: Download latest firmware from artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: firmware
+        path: artifact
+    - name: Display structure of downloaded files
+      run: |
+        ls -R
+    - name: Move files back
+      run: |
+        rsync -avR artifact/./ ./
+        rm -rf artifact
+    - name: Push actual firmwares in branch main
+      run: |
+        git config user.email github-actions@github.com
+        git config user.name "github-actions"
+        git add -A
+        git commit --allow-empty -m "${{ env.tas_com }}"
+        git push origin main -f
+
+  genManifestpy:
+    needs: upload_firmware
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
+    - name: Run genManifest.py
+      run: |
+        python genManifest.py
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      name: Transfer the changed Manifest into the repository
+      with:
+        commit_message: Manifest(s) update
+
+  deploy:
+    needs: genManifestpy
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
