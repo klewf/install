@@ -17,7 +17,7 @@ jobs:
     - name: Build commit message for repo
       run: |
         rm release-info.txt
-        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-master/trigger.txt)
         tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
         echo "$tas_com_tmp" >> release-info.txt
     - name: Save repo as artifact
