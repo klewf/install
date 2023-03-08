@@ -1,7 +1,6 @@
 name: devel_release_firmware
 
 on:
-  workflow_dispatch:
   push:
     branches: firmware
     paths:
