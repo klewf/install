@@ -5,12 +5,12 @@ on:
   push:
     branches: firmware
     paths:
-      - 'firmware/unofficial/tasmota-fullrules.bin'
+      - 'firmware/unofficial/trigger.txt'
+      #- 'firmware/unofficial/tasmota-fullrules.bin'
 
 jobs:
 
   save_repo:
-    needs: copycat
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
