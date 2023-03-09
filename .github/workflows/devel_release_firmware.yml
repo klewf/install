@@ -2,7 +2,6 @@ name: devel_release_firmware
 
 on:
   push:
-    branches: gh_actions
     paths:
       - 'trigger_devel.txt'
 
