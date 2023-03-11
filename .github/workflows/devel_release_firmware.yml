@@ -106,17 +106,12 @@ jobs:
       with:
         python-version: '3.9'
     - run: pip install -r requirements.txt
-    - name: Run genManifest.py
+    - name: Transfer Manifest into the repository when changend
       run: |
         python genManifest.py
-    - name: Transfer the changed Manifest into the repository
-      run: |
-        git config user.email github-actions@github.com
-        git config user.name "github-actions"
-        git add -f ./*
-        git commit --allow-empty -m "update manifest"
-        git push origin firmware -f
-
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Manifest(s) update
   deploy:
     needs: genManifestpy
     environment:
