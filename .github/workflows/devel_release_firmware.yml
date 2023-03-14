@@ -75,7 +75,7 @@ jobs:
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Update Manifest files
       run: |
-        mkdir manifest_release
+        #mkdir manifest_release
         python genManifest.py
         #python genManifestRelease.py
     - name: Release devel firmwares
