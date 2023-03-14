@@ -89,9 +89,8 @@ jobs:
           tag.txt
           #manifests_release.json
           #manifest_release/*
-          firmware/map/*
-          firmware/tasmota/other/*
-          firmware/tasmota32/other/*
+          firmware/development/*
+          firmware/unofficial/*
       env:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
     - name: Remove not needed files stored in repo
@@ -132,4 +131,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-
