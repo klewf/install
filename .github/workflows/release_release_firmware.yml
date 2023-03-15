@@ -75,9 +75,9 @@ jobs:
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Update Manifest files
       run: |
-        pip install -r requirements.txt
         #mkdir manifest_release
         python genManifest.py
+        python genManifestWithFeatureas.py
         #python genManifestRelease.py
     - name: Release firmwares
       uses: jason2866/action-gh-release@v1.2
@@ -88,8 +88,8 @@ jobs:
         files: |
           tag_r_latest.txt
           tag_r.txt
-          #manifests_release.json
-          #manifest_release/*
+          manifests_release.json
+          manifest_release/*
           firmware/release/*
       env:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
