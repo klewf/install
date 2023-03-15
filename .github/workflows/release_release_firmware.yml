@@ -62,15 +62,15 @@ jobs:
       run: |
         rsync -avR artifact/./ ./
         rm -rf artifact
-        rm tag_latest.txt 2> /dev/null || echo > /dev/null
+        rm tag_r_latest.txt 2> /dev/null || echo > /dev/null
     - name: Build Tag and commit message
       run: |
         tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-master/trigger.txt)
         tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
         tag_name_tmp="$(date -I).r.$tas_com_tmp1"
         echo "$tas_com_tmp" >> release-info.txt
-        echo "$tag_name_tmp" >> tag_latest.txt
-        echo "$tag_name_tmp" >> tag.txt
+        echo "$tag_name_tmp" >> tag_r_latest.txt
+        echo "$tag_name_tmp" >> tag_r.txt
         echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Update Manifest files
@@ -86,8 +86,8 @@ jobs:
         body_path: release-info.txt
         prerelease: true
         files: |
-          tag_latest.txt
-          tag.txt
+          tag_r_latest.txt
+          tag_r.txt
           #manifests_release.json
           #manifest_release/*
           firmware/release/*
