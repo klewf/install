@@ -13,12 +13,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: firmware
-    - name: Build commit message for repo
-      run: |
-        rm release-info.txt
-        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-master/trigger.txt)
-        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
-        echo "$tas_com_tmp" >> release-info.txt
     - name: Save repo as artifact
       run: |
         rsync -avR ./ artifact
@@ -56,11 +50,6 @@ jobs:
       with:
         token: ${{ secrets.MASTER_ACCESS_TOKEN }}
         ref: firmware
-    - name: Build commit message
-      run: |
-        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
-        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
-        echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
     - name: Download repo artifact
       uses: actions/download-artifact@v3
       with:
@@ -73,17 +62,42 @@ jobs:
       run: |
         rsync -avR artifact/./ ./
         rm -rf artifact
-    - name: Release release firmwares
+        rm tag_latest.txt 2> /dev/null || echo > /dev/null
+    - name: Build Tag and commit message
+      run: |
+        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
+        tag_name_tmp="$(date -I).d.$tas_com_tmp1"
+        echo "$tas_com_tmp" >> release-info.txt
+        echo "$tag_name_tmp" >> tag_latest.txt
+        echo "$tag_name_tmp" >> tag.txt
+        echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
+        echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
+    - name: Update Manifest files
+      run: |
+        pip install -r requirements.txt
+        #mkdir manifest_release
+        python genManifest.py
+        #python genManifestRelease.py
+    - name: Release firmwares
       uses: jason2866/action-gh-release@v1.2
       with:
-        tag_name: ${{ github.run_number }}
+        tag_name: ${{ env.tag_name }}
         body_path: release-info.txt
         prerelease: true
         files: |
-          release-info.txt
+          tag_latest.txt
+          tag.txt
+          #manifests_release.json
+          #manifest_release/*
           firmware/release/*
       env:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
+    - name: Remove not needed files stored in repo
+      run: |
+        rm release-info.txt
+        #rm manifests_release.json
+        #rm -rf manifest_release
     - name: Push artifact content in branch firmware
       run: |
         git config user.email github-actions@github.com
@@ -92,32 +106,8 @@ jobs:
         git commit --allow-empty -m "${{ env.tas_com }}"
         git push origin firmware -f
 
-  genManifestpy:
-    needs: release_restore
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        ref: firmware
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-    - run: pip install -r requirements.txt
-    - name: Run genManifest.py
-      run: |
-        python genManifest.py
-    - name: Transfer the changed Manifest into the repository
-      run: |
-        git config user.email github-actions@github.com
-        git config user.name "github-actions"
-        git add -f ./*
-        git commit --allow-empty -m "update manifest"
-        git push origin firmware -f
-
   deploy:
-    needs: genManifestpy
+    needs: release_restore
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
