@@ -84,7 +84,7 @@ jobs:
       with:
         tag_name: ${{ env.tag_name }}
         body_path: release-info.txt
-        prerelease: true
+        prerelease: false
         files: |
           tag_r_latest.txt
           tag_r.txt
