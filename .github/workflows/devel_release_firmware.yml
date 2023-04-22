@@ -102,9 +102,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
     - name: Remove not needed files stored in repo
       run: |
-        rm release-info.txt
-        rm manifests_release.json
-        rm -rf manifest_release
+        #rm release-info.txt
+        #rm manifests_release.json
+        #rm -rf manifest_release
     - name: Push artifact content in branch firmware
       run: |
         git config user.email github-actions@github.com
