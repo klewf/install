@@ -80,7 +80,7 @@ jobs:
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Update Manifest files
       run: |
-        #mkdir manifest_release
+        mkdir manifest_release
         python genManifest.py
         python genManifestWithFeatureas.py
         #python genManifestRelease.py
@@ -95,6 +95,7 @@ jobs:
           tag.txt
           manifests_release.json
           manifest_release/*
+          firmware/map/*
           firmware/development/*
           firmware/unofficial/*
       env:
@@ -102,8 +103,8 @@ jobs:
     - name: Remove not needed files stored in repo
       run: |
         rm release-info.txt
-        #rm manifests_release.json
-        #rm -rf manifest_release
+        rm manifests_release.json
+        rm -rf manifest_release
     - name: Push artifact content in branch firmware
       run: |
         git config user.email github-actions@github.com
