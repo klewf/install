@@ -80,10 +80,10 @@ jobs:
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Update Manifest files
       run: |
-        #mkdir manifest_release
+        mkdir manifest_release
         python genManifest.py
         python genManifestWithFeatureas.py
-        #python genManifestRelease.py
+        python genManifestRelease.py
     - name: Release firmwares
       uses: jason2866/action-gh-release@v1.2
       with:
@@ -100,9 +100,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
     - name: Remove not needed files stored in repo
       run: |
-        rm release-info.txt
-        #rm manifests_release.json
-        #rm -rf manifest_release
+        rm -rf release-info.txt
+        rm -rf manifests_release.json
+        rm -rf manifest_release
     - name: Push artifact content in branch firmware
       run: |
         git config user.email github-actions@github.com
