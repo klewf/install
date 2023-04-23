@@ -94,7 +94,8 @@ jobs:
           tag_latest.txt
           tag.txt
           manifests_release.json
-          manifest_release/*
+          manifest_release/development*
+          manifest_release/unofficial*
           firmware/development/*
           firmware/unofficial/*
       env:
