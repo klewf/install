@@ -83,7 +83,7 @@ jobs:
         mkdir manifest_release
         python genManifest.py
         python genManifestWithFeatureas.py
-        python genManifestRelease.py
+        python genManifestReleaserelease.py
     - name: Release firmwares
       uses: jason2866/action-gh-release@v1.2
       with:
