@@ -83,7 +83,7 @@ jobs:
         mkdir manifest_release
         python genManifest.py
         python genManifestWithFeatureas.py
-        python genManifestReleaserelease.py
+        python genManifestRelease.py
     - name: Release firmwares
       uses: jason2866/action-gh-release@v1.2
       with:
@@ -94,7 +94,7 @@ jobs:
           tag_r_latest.txt
           tag_r.txt
           manifests_release.json
-          manifest_release/*
+          manifest_release/release*
           firmware/release/*
       env:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
