@@ -70,7 +70,7 @@ jobs:
         rm tag_latest.txt 2> /dev/null || echo > /dev/null
     - name: Build Tag and commit message
       run: |
-        tas_com_tmp1=$(curl https://raw.githubusercontent.com/arendst/tmp_copy/action-development/trigger.txt)
+        tas_com_tmp1=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
         tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
         tag_name_tmp="$(date -I).d.$tas_com_tmp1"
         echo "$tas_com_tmp" >> release-info.txt
