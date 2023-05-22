@@ -1,6 +1,8 @@
 name: devel_release_firmware
 
 on:
+  repository_dispatch:
+  workflow_dispatch:
   push:
     paths:
       - 'trigger_devel.txt'
