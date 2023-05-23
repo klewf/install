@@ -123,18 +123,19 @@ jobs:
       run: |
         mkdir manifest_release
         python genManifest.py
-        python genManifestWithFeatureas.py
+        #python genManifestWithFeatureas.py
         python genManifestRelease.py
     - name: Build Tag and commit message
       run: |
         COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
         COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
-        tag_name="$(date -I).d.$COMMIT_SHA"
+        tag_name_tmp="$(date -I).d.$COMMIT_SHA"
         rm release-info.txt 2> /dev/null || echo > /dev/null
+        rm tag_latest.txt 2> /dev/null || echo > /dev/null
         echo "$COMMIT" >> release-info.txt
-        echo "$COMMIT" >> tag_latest.txt
+        echo "$tag_name_tmp" >> tag_latest.txt
         echo "$tag_name" >> tag.txt
-        echo "tag_name=$COMMIT" >> $GITHUB_ENV
+        echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Release devel firmwares
       uses: jason2866/action-gh-release@v1.2
       with:
