@@ -125,6 +125,16 @@ jobs:
         python genManifest.py
         python genManifestWithFeatureas.py
         python genManifestRelease.py
+    - name: Build Tag and commit message
+      run: |
+        COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
+        COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
+        tag_name="$(date -I).d.$COMMIT_SHA"
+        rm release-info.txt 2> /dev/null || echo > /dev/null
+        echo "$COMMIT" >> release-info.txt
+        echo "$COMMIT" >> tag_latest.txt
+        echo "$tag_name" >> tag.txt
+        echo "tag_name=$COMMIT" >> $GITHUB_ENV
     - name: Release devel firmwares
       uses: jason2866/action-gh-release@v1.2
       with:
@@ -148,8 +158,6 @@ jobs:
         rm -rf manifest_release
     - name: Push updated devel + special firmware content in branch firmware
       run: |
-        COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
-        COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config user.name "github-actions[bot]"
         git add -A
@@ -226,4 +234,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-
