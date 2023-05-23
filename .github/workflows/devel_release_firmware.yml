@@ -214,8 +214,8 @@ jobs:
         git push origin firmware -f
     - name: Push changed tag files in branch main
       run: |
-        git remote add origin https://github.com/tasmota/install
-        git branch -M main
+        git fetch
+        git switch -c main origin/main
         git add tag*
         git commit --allow-empty -m "tag files update"
         git push -u origin main
