@@ -134,7 +134,7 @@ jobs:
         rm tag_latest.txt 2> /dev/null || echo > /dev/null
         echo "$COMMIT" >> release-info.txt
         echo "$tag_name_tmp" >> tag_latest.txt
-        echo "$tag_name" >> tag.txt
+        echo "$tag_name_tmp" >> tag.txt
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
     - name: Release devel firmwares
       uses: jason2866/action-gh-release@v1.2
