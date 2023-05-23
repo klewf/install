@@ -116,6 +116,11 @@ jobs:
         echo "$tag_name_tmp" >> tag.txt
         echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
+    - name: Push into branch firmware
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        branch: 'firmware'
     - name: Update Manifest files
       run: |
         mkdir manifest_release
