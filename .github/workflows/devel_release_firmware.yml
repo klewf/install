@@ -226,7 +226,7 @@ jobs:
         echo "$COMMIT" >> release-info.txt
         echo "$tag_r_name_tmp" >> tag_r_latest.txt
         echo "$tag_r_name_tmp" >> tag_r.txt
-        echo "tag_name=$tag_r_name_tmp" >> $GITHUB_ENV
+        echo "tag_r_name=$tag_r_name_tmp" >> $GITHUB_ENV
     - name: Release firmwares
       if: env.no_new_release == 'false'
       uses: jason2866/action-gh-release@v1.2
