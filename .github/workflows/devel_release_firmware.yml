@@ -29,7 +29,7 @@ jobs:
         git switch firmware
         git reset --hard new_branch                                    # reset firmware branch
         git push origin firmware -f
-        git push origin --delete new_branch                             # delete empty_branch
+        git push origin --delete new_branch                            # delete empty_branch
 
 
   download:
@@ -213,12 +213,15 @@ jobs:
         git commit --allow-empty -m "$COMMIT"
         git push origin firmware -f
     - name: Push changed tag files in branch main
-      run: |
-        git fetch
-        git switch -c main origin/main
-        git add tag*
-        git commit --allow-empty -m "tag files update"
-        git push -u origin main
+      uses: Jason2866/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        source_file: 'tag*'
+        destination_repo: 'tasmota/install'
+        destination_branch: 'main'
+        user_email: '41898282+github-actions[bot]@users.noreply.github.com'
+        user_name: 'github-actions[bot]'
 
   deploy:
     needs: download
