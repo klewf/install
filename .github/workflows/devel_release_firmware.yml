@@ -106,21 +106,30 @@ jobs:
         [ ! -f ./mv_firmware/firmware/tasmota-minimal.bin ] || rm -rf ./mv_firmware/firmware/tasmota-minimal.bin
         [ ! -f ./mv_firmware/firmware/* ] || mv ./mv_firmware/firmware/* ./firmware/development/languages/
         rm -rf ./mv_firmware
+    - name: Download artifact "special_firmwares"
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: Build_special_firmware.yml
+        repo: Jason2866/Tasmota-build
+        name: special*
+        name_is_regexp: true
+    - name: Move files back
+      run: |
+        mkdir -p ./firmware/unofficial/
+        mv ./special_firmware/firmware/tasmota* ./firmware/unofficial/
+        rm -rf ./special_firmware
     - name: Build Tag and commit message
       run: |
         tas_com_tmp1=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
         tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
         tag_name_tmp="$(date -I).d.$tas_com_tmp1"
+        rm release-info.txt 2> /dev/null || echo > /dev/null
         echo "$tas_com_tmp" >> release-info.txt
         echo "$tag_name_tmp" >> tag_latest.txt
         echo "$tag_name_tmp" >> tag.txt
         echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
         echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
-    - name: Push into branch firmware
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        branch: 'firmware'
     - name: Update Manifest files
       run: |
         mkdir manifest_release
