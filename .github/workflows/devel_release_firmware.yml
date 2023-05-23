@@ -71,121 +71,38 @@ jobs:
         rm -rf ./firmware_safeboot
     - name: Move firmware files in sub-folders
       run: |
-        mkdir -p ./firmware/tasmota/languages
-        mkdir -p ./firmware/tasmota32/languages
-        mkdir -p ./firmware/map
-        [ ! -f ./mv_firmware/map/* ] || mv ./mv_firmware/map/* ./firmware/map/
-        [ ! -f ./mv_firmware/firmware/tasmota.* ] || mv ./mv_firmware/firmware/tasmota.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-4M.* ] || mv ./mv_firmware/firmware/tasmota-4M.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-sensors.* ] || mv ./mv_firmware/firmware/tasmota-sensors.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-minimal.bin.gz ] || mv ./mv_firmware/firmware/tasmota-minimal.bin.gz ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-lite.* ] || mv ./mv_firmware/firmware/tasmota-lite.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-ir*.* ] || mv ./mv_firmware/firmware/tasmota-ir*.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-display.* ] || mv ./mv_firmware/firmware/tasmota-display.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-knx.* ] || mv ./mv_firmware/firmware/tasmota-knx.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-zbbridge.* ] || mv ./mv_firmware/firmware/tasmota-zbbridge.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota-zigbee.* ] || mv ./mv_firmware/firmware/tasmota-zigbee.* ./firmware/tasmota/
-        [ ! -f ./mv_firmware/firmware/tasmota32.* ] || mv ./mv_firmware/firmware/tasmota32.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32solo1*.* ] || mv ./mv_firmware/firmware/tasmota32solo1*.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-ir*.* ] || mv ./mv_firmware/firmware/tasmota32-ir*.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-display.* ] || mv ./mv_firmware/firmware/tasmota32-display.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-lvgl.* ] || mv ./mv_firmware/firmware/tasmota32-lvgl.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-web*.* ] || mv ./mv_firmware/firmware/tasmota32-web*.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-odroidgo.* ] || mv ./mv_firmware/firmware/tasmota32-odroidgo.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-zbbrdgpro.* ] || mv ./mv_firmware/firmware/tasmota32-zbbrdgpro.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-nspanel.* ] || mv ./mv_firmware/firmware/tasmota32-nspanel.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-core2.* ] || mv ./mv_firmware/firmware/tasmota32-core2.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-bluetooth.* ] || mv ./mv_firmware/firmware/tasmota32-bluetooth.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32c3*.* ] || mv ./mv_firmware/firmware/tasmota32c3*.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32s2*.* ] || mv ./mv_firmware/firmware/tasmota32s2*.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32s3*.* ] || mv ./mv_firmware/firmware/tasmota32s3*.* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-safeboot* ] || mv ./mv_firmware/firmware/tasmota32-safeboot* ./firmware/tasmota32/
-        [ ! -f ./mv_firmware/firmware/tasmota32-* ] || mv ./mv_firmware/firmware/tasmota32-* ./firmware/tasmota32/languages/
-        [ ! -f ./mv_firmware/firmware/tasmota32* ] || mv ./mv_firmware/firmware/tasmota32* ./firmware/tasmota32/
+        mkdir -p ./firmware/development
+        mkdir -p ./firmware/development/languages
+        [ ! -f ./mv_firmware/firmware/tasmota.* ] || mv ./mv_firmware/firmware/tasmota.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-4M.* ] || mv ./mv_firmware/firmware/tasmota-4M.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-sensors.* ] || mv ./mv_firmware/firmware/tasmota-sensors.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-minimal.bin.gz ] || mv ./mv_firmware/firmware/tasmota-minimal.bin.gz ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-lite.* ] || mv ./mv_firmware/firmware/tasmota-lite.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-ir*.* ] || mv ./mv_firmware/firmware/tasmota-ir*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-display.* ] || mv ./mv_firmware/firmware/tasmota-display.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-knx.* ] || mv ./mv_firmware/firmware/tasmota-knx.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-zbbridge.* ] || mv ./mv_firmware/firmware/tasmota-zbbridge.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota-zigbee.* ] || mv ./mv_firmware/firmware/tasmota-zigbee.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32.* ] || mv ./mv_firmware/firmware/tasmota32.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32solo1*.* ] || mv ./mv_firmware/firmware/tasmota32solo1*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-ir*.* ] || mv ./mv_firmware/firmware/tasmota32-ir*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-display.* ] || mv ./mv_firmware/firmware/tasmota32-display.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-lvgl.* ] || mv ./mv_firmware/firmware/tasmota32-lvgl.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-web*.* ] || mv ./mv_firmware/firmware/tasmota32-web*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-odroidgo.* ] || mv ./mv_firmware/firmware/tasmota32-odroidgo.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-zbbrdgpro.* ] || mv ./mv_firmware/firmware/tasmota32-zbbrdgpro.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-nspanel.* ] || mv ./mv_firmware/firmware/tasmota32-nspanel.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-core2.* ] || mv ./mv_firmware/firmware/tasmota32-core2.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-bluetooth.* ] || mv ./mv_firmware/firmware/tasmota32-bluetooth.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32c3*.* ] || mv ./mv_firmware/firmware/tasmota32c3*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32s2*.* ] || mv ./mv_firmware/firmware/tasmota32s2*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32s3*.* ] || mv ./mv_firmware/firmware/tasmota32s3*.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-safeboot* ] || mv ./mv_firmware/firmware/tasmota32-safeboot* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-* ] || mv ./mv_firmware/firmware/tasmota32-* ./firmware/developmentlanguages/
+        [ ! -f ./mv_firmware/firmware/tasmota32* ] || mv ./mv_firmware/firmware/tasmota32* ./firmware/development
         [ ! -f ./mv_firmware/firmware/tasmota-minimal.bin ] || rm -rf ./mv_firmware/firmware/tasmota-minimal.bin
-        [ ! -f ./mv_firmware/firmware/* ] || mv ./mv_firmware/firmware/* ./firmware/tasmota/languages/
+        [ ! -f ./mv_firmware/firmware/* ] || mv ./mv_firmware/firmware/* ./firmware/developmentlanguages/
         rm -rf ./mv_firmware
-    - name: Update Manifest files
-      run: |
-        python genManifest.py
-    - name: Push updated devel content in branch firmware
-      run: |
-        COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
-        COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config user.name "github-actions[bot]"
-        git add -A
-        git commit --allow-empty -m "$COMMIT"
-        git push origin firmware -f
-    - name: Download release firmwares from latest release in github
-      run: |
-        gh release download -p "tasmota*" -D gh_latest -R github.com/arendst/tasmota
-    - name: Move firmware files in sub-folders
-      run: |
-        mkdir -p ./release-firmware/tasmota/languages
-        mkdir -p ./release-firmware/tasmota32/languages
-        [ ! -f ./gh_latest/tasmota.* ] || mv ./gh_latest/tasmota.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-4M.* ] || mv ./gh_latest/tasmota-4M.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-sensors.* ] || mv ./gh_latest/tasmota-sensors.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-minimal.bin.gz ] || mv ./gh_latest/tasmota-minimal.bin.gz ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-lite.* ] || mv ./gh_latest/tasmota-lite.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-ir*.* ] || mv ./gh_latest/tasmota-ir*.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-display.* ] || mv ./gh_latest/tasmota-display.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-knx.* ] || mv ./gh_latest/tasmota-knx.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-zbbridge.* ] || mv ./gh_latest/tasmota-zbbridge.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota-zigbee.* ] || mv ./gh_latest/tasmota-zigbee.* ./release-firmware/tasmota/
-        [ ! -f ./gh_latest/tasmota32.* ] || mv ./gh_latest/tasmota32.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32solo1*.* ] || mv ./gh_latest/tasmota32solo1*.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-ir*.* ] || mv ./gh_latest/tasmota32-ir*.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-display.* ] || mv ./gh_latest/tasmota32-display.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-lvgl.* ] || mv ./gh_latest/tasmota32-lvgl.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-web*.* ] || mv ./gh_latest/tasmota32-web*.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-zbbrdgpro.* ] || mv ./gh_latest/tasmota32-zbbrdgpro.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-nspanel.* ] || mv ./gh_latest/tasmota32-nspanel.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-odroidgo.* ] || mv ./gh_latest/tasmota32-odroidgo.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-core2.* ] || mv ./gh_latest/tasmota32-core2.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-bluetooth.* ] || mv ./gh_latest/tasmota32-bluetooth.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32c3*.* ] || mv ./gh_latest/tasmota32c3*.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32s2*.* ] || mv ./gh_latest/tasmota32s2*.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32s3*.* ] || mv ./gh_latest/tasmota32s3*.* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-safeboot* ] || mv ./gh_latest/tasmota32-safeboot* ./release-firmware/tasmota32/
-        [ ! -f ./gh_latest/tasmota32-* ] || mv ./gh_latest/tasmota32-* ./release-firmware/tasmota32/languages/
-        [ ! -f ./gh_latest/tasmota32* ] || mv ./gh_latest/tasmota32* ./release-firmware/tasmota32/languages/
-        [ ! -f ./gh_latest/tasmota-minimal.bin ] || rm -rf ./gh_latest/tasmota-minimal.bin
-        [ ! -f ./gh_latest/* ] || mv ./gh_latest/* ./release-firmware/tasmota/languages/
-        rm -rf ./gh_latest
-    - name: Push updated master firmwares in branch firmware
-      run: |
-        COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
-        COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config user.name "github-actions[bot]"
-        git add -A
-        git commit --allow-empty -m "$COMMIT"
-        git push origin firmware -f
-
-
-  release_restore:
-    needs: empty_branch
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.MASTER_ACCESS_TOKEN }}
-        ref: firmware
-    - name: Download repo artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: firmware
-        path: artifact
-    - name: Display structure of downloaded files
-      run: |
-        ls -R
-    - name: Move files back
-      run: |
-        rsync -avR artifact/./ ./
-        rm -rf artifact
-        rm tag_latest.txt 2> /dev/null || echo > /dev/null
     - name: Build Tag and commit message
       run: |
         tas_com_tmp1=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
@@ -230,9 +147,64 @@ jobs:
         git add -A
         git commit --allow-empty -m "${{ env.tas_com }}"
         git push origin firmware -f
+    - name: Push updated devel content in branch firmware
+      run: |
+        COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
+        COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add -A
+        git commit --allow-empty -m "$COMMIT"
+        git push origin firmware -f
+    - name: Download release firmwares from latest release in github
+      run: |
+        gh release download -p "tasmota*" -D gh_latest -R github.com/arendst/tasmota
+    - name: Move firmware files in sub-folders
+      run: |
+        mkdir -p ./firmware/release/
+        mkdir -p ./firmware/release/languages
+        [ ! -f ./gh_latest/tasmota.* ] || mv ./gh_latest/tasmota.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-4M.* ] || mv ./gh_latest/tasmota-4M.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-sensors.* ] || mv ./gh_latest/tasmota-sensors.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-minimal.bin.gz ] || mv ./gh_latest/tasmota-minimal.bin.gz ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-lite.* ] || mv ./gh_latest/tasmota-lite.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-ir*.* ] || mv ./gh_latest/tasmota-ir*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-display.* ] || mv ./gh_latest/tasmota-display.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-knx.* ] || mv ./gh_latest/tasmota-knx.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-zbbridge.* ] || mv ./gh_latest/tasmota-zbbridge.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota-zigbee.* ] || mv ./gh_latest/tasmota-zigbee.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32.* ] || mv ./gh_latest/tasmota32.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32solo1*.* ] || mv ./gh_latest/tasmota32solo1*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-ir*.* ] || mv ./gh_latest/tasmota32-ir*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-display.* ] || mv ./gh_latest/tasmota32-display.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-lvgl.* ] || mv ./gh_latest/tasmota32-lvgl.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-web*.* ] || mv ./gh_latest/tasmota32-web*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-zbbrdgpro.* ] || mv ./gh_latest/tasmota32-zbbrdgpro.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-nspanel.* ] || mv ./gh_latest/tasmota32-nspanel.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-odroidgo.* ] || mv ./gh_latest/tasmota32-odroidgo.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-core2.* ] || mv ./gh_latest/tasmota32-core2.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-bluetooth.* ] || mv ./gh_latest/tasmota32-bluetooth.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32c3*.* ] || mv ./gh_latest/tasmota32c3*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32s2*.* ] || mv ./gh_latest/tasmota32s2*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32s3*.* ] || mv ./gh_latest/tasmota32s3*.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-safeboot* ] || mv ./gh_latest/tasmota32-safeboot* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-* ] || mv ./gh_latest/tasmota32-* ./firmware/release/languages/
+        [ ! -f ./gh_latest/tasmota32* ] || mv ./gh_latest/tasmota32* ./firmware/release/languages/
+        [ ! -f ./gh_latest/tasmota-minimal.bin ] || rm -rf ./gh_latest/tasmota-minimal.bin
+        [ ! -f ./gh_latest/* ] || mv ./gh_latest/* ./firmware/release/languages/
+        rm -rf ./gh_latest
+    - name: Push updated master firmwares in branch firmware
+      run: |
+        COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
+        COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config user.name "github-actions[bot]"
+        git add -A
+        git commit --allow-empty -m "$COMMIT"
+        git push origin firmware -f
 
   deploy:
-    needs: release_restore
+    needs: download
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -251,8 +223,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
