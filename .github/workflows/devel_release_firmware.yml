@@ -217,7 +217,7 @@ jobs:
       env:
         API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
       with:
-        source_file: 'tag.txt'
+        source_file: 'tag/*'
         destination_repo: 'tasmota/install'
         destination_branch: 'main'
         user_email: '41898282+github-actions[bot]@users.noreply.github.com'
