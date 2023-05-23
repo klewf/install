@@ -212,6 +212,13 @@ jobs:
         git add -A
         git commit --allow-empty -m "$COMMIT"
         git push origin firmware -f
+    - name: Push changed tag files in branch main
+      run: |
+        git remote add origin https://github.com/tasmota/install
+        git branch -M main
+        git add tag*
+        git commit --allow-empty -m "tag files update"
+        git push -u origin main
 
   deploy:
     needs: download
