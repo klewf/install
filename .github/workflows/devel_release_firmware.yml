@@ -49,7 +49,7 @@ jobs:
         git switch -c work
         rm -rf ./github
         git merge mrg_main/main --allow-unrelated-histories
-    - name: Push into branch firmware
+    - name: Push merged content in branch firmware
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
@@ -57,7 +57,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: firmware
-    - name: Download artifact
+    - name: Download development firmware artifacts
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
@@ -65,14 +65,14 @@ jobs:
         repo: arendst/tasmota
         name: firmware*
         name_is_regexp: true
-    - name: Move artifacts in one folder
+    - name: Move development artifacts in one folder
       run: |
         mkdir -p ./mv_firmware
         rsync -avR ./firmware/./ ./mv_firmware
         rsync -avR ./firmware_safeboot/./ ./mv_firmware
         rm -rf ./firmware/firmware
         rm -rf ./firmware_safeboot
-    - name: Move firmware files in sub-folders
+    - name: Move development firmware files in sub-folders
       run: |
         mkdir -p ./firmware/development
         mkdir -p ./firmware/development/languages
@@ -106,7 +106,7 @@ jobs:
         [ ! -f ./mv_firmware/firmware/tasmota-minimal.bin ] || rm -rf ./mv_firmware/firmware/tasmota-minimal.bin
         [ ! -f ./mv_firmware/firmware/* ] || mv ./mv_firmware/firmware/* ./firmware/development/languages/
         rm -rf ./mv_firmware
-    - name: Download artifact "special_firmwares"
+    - name: Download fimrware artifact "special_firmwares"
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
@@ -114,23 +114,12 @@ jobs:
         repo: Jason2866/Tasmota-build
         name: special*
         name_is_regexp: true
-    - name: Move files back
+    - name: Move special firmware files in folder
       run: |
         mkdir -p ./firmware/unofficial/
         mv ./special_firmware/firmware/tasmota* ./firmware/unofficial/
         rm -rf ./special_firmware
-    - name: Build Tag and commit message
-      run: |
-        tas_com_tmp1=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
-        tas_com_tmp="Based on https://github.com/arendst/Tasmota/commit/${tas_com_tmp1}"
-        tag_name_tmp="$(date -I).d.$tas_com_tmp1"
-        rm release-info.txt 2> /dev/null || echo > /dev/null
-        echo "$tas_com_tmp" >> release-info.txt
-        echo "$tag_name_tmp" >> tag_latest.txt
-        echo "$tag_name_tmp" >> tag.txt
-        echo "tas_com=$tas_com_tmp" >> $GITHUB_ENV
-        echo "tag_name=$tag_name_tmp" >> $GITHUB_ENV
-    - name: Update Manifest files
+    - name: Update all Manifest files
       run: |
         mkdir manifest_release
         python genManifest.py
@@ -152,19 +141,12 @@ jobs:
           firmware/unofficial/*
       env:
         GITHUB_TOKEN: ${{ secrets.MASTER_ACCESS_TOKEN }}
-    - name: Remove not needed files stored in repo
+    - name: Remove not wanted files to be stored in repo
       run: |
         rm -rf release-info.txt
         rm -rf manifests_release.json
         rm -rf manifest_release
-    - name: Push artifact content in branch firmware
-      run: |
-        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config user.name "github-actions[bot]"
-        git add -A
-        git commit --allow-empty -m "${{ env.tas_com }}"
-        git push origin firmware -f
-    - name: Push updated devel content in branch firmware
+    - name: Push updated devel + special firmware content in branch firmware
       run: |
         COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/development" | jq -r '.sha')
         COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
@@ -173,10 +155,10 @@ jobs:
         git add -A
         git commit --allow-empty -m "$COMMIT"
         git push origin firmware -f
-    - name: Download release firmwares from latest release in github
+    - name: Download latest release firmwares from release section in github
       run: |
         gh release download -p "tasmota*" -D gh_latest -R github.com/arendst/tasmota
-    - name: Move firmware files in sub-folders
+    - name: Move release firmware files in sub-folders
       run: |
         mkdir -p ./firmware/release/
         mkdir -p ./firmware/release/languages
@@ -210,7 +192,7 @@ jobs:
         [ ! -f ./gh_latest/tasmota-minimal.bin ] || rm -rf ./gh_latest/tasmota-minimal.bin
         [ ! -f ./gh_latest/* ] || mv ./gh_latest/* ./firmware/release/languages/
         rm -rf ./gh_latest
-    - name: Push updated master firmwares in branch firmware
+    - name: Push release firmwares in branch firmware
       run: |
         COMMIT_SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
         COMMIT="Firmware built from commit https://github.com/arendst/Tasmota/commit/${COMMIT_SHA}"
