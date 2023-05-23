@@ -231,7 +231,7 @@ jobs:
       if: env.no_new_release == 'false'
       uses: jason2866/action-gh-release@v1.2
       with:
-        tag_name: ${{ env.tag_name }}
+        tag_name: ${{ env.tag_r_name }}
         body_path: release-info.txt
         prerelease: false
         files: |
