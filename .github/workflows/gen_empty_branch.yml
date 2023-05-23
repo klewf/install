@@ -1,7 +1,9 @@
 name: Generate Empty branch
 
 on:
-  workflow_dispatch:  # Manually start a workflow
+  push:
+    paths:
+      - 'empty.txt'
 
 jobs:
   empty_branch:
