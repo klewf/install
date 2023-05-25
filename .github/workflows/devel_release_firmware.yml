@@ -215,7 +215,7 @@ jobs:
             echo "no_new_release=true" >> $GITHUB_ENV
             echo "No new Tasmota release found!"
         else
-            echo "no_new_release=true" >> $GITHUB_ENV
+            echo "no_new_release=false" >> $GITHUB_ENV
             echo "Found a new Tasmota release!"
         fi
     - name: When a Tasmota release is done -> release firmware
