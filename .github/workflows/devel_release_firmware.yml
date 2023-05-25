@@ -203,16 +203,18 @@ jobs:
         [ ! -f ./gh_latest/tasmota-minimal.bin ] || rm -rf ./gh_latest/tasmota-minimal.bin
         [ ! -f ./gh_latest/* ] || mv ./gh_latest/* ./firmware/release/languages/
         rm -rf ./gh_latest
-    - name: Check for a new Tasmota release
+    - name: Check for a new Tasmota release todo logic is wrong!
       run: |
         tag_r_latest=$(<tag_r_latest.txt)
+        SHA=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
+        COMMIT="$(date -I).r.$COMMIT_SHA"
         echo $tag_r_latest
         echo $Commit
         if [ "$Commit" = "$tag_r_latest" ]; then
             echo "no_new_release=true" >> $GITHUB_ENV
             echo "No new Tasmota release found!"
         else
-            echo "no_new_release=false" >> $GITHUB_ENV
+            echo "no_new_release=true" >> $GITHUB_ENV
             echo "Found a new Tasmota release!"
         fi
     - name: When a Tasmota release is done -> release firmware
