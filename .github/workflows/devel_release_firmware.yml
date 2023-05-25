@@ -209,7 +209,7 @@ jobs:
         echo $tag_r_latest
         Commit=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
         echo $Commit
-        sha_r_latest=${tag_r_latest:14}
+        sha_r_latest=${tag_r_latest:13}
         echo $sha_r_latest
         if [ "$Commit" = "$sha_r_latest" ]; then
             echo "no_new_release=true" >> $GITHUB_ENV
