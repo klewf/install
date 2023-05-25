@@ -206,7 +206,7 @@ jobs:
     - name: Check for a new Tasmota release
       run: |
         tag_r_latest=$(<tag_r_latest.txt)
-        COMMIT=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
+        Commit=$(curl -s "https://api.github.com/repos/arendst/tasmota/commits/master" | jq -r '.sha')
         sha_r_latest=${$tag_r_latest:13:40}
         echo $sha_r_latest
         echo $Commit
