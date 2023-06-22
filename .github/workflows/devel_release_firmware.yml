@@ -95,6 +95,7 @@ jobs:
         [ ! -f ./mv_firmware/firmware/tasmota32-odroidgo.* ] || mv ./mv_firmware/firmware/tasmota32-odroidgo.* ./firmware/development
         [ ! -f ./mv_firmware/firmware/tasmota32-zbbrdgpro.* ] || mv ./mv_firmware/firmware/tasmota32-zbbrdgpro.* ./firmware/development
         [ ! -f ./mv_firmware/firmware/tasmota32-nspanel.* ] || mv ./mv_firmware/firmware/tasmota32-nspanel.* ./firmware/development
+        [ ! -f ./mv_firmware/firmware/tasmota32-matter.* ] || mv ./mv_firmware/firmware/tasmota32-matter.* ./firmware/development
         [ ! -f ./mv_firmware/firmware/tasmota32-core2.* ] || mv ./mv_firmware/firmware/tasmota32-core2.* ./firmware/development
         [ ! -f ./mv_firmware/firmware/tasmota32-bluetooth.* ] || mv ./mv_firmware/firmware/tasmota32-bluetooth.* ./firmware/development
         [ ! -f ./mv_firmware/firmware/tasmota32c3*.* ] || mv ./mv_firmware/firmware/tasmota32c3*.* ./firmware/development
@@ -190,6 +191,7 @@ jobs:
         [ ! -f ./gh_latest/tasmota32-lvgl.* ] || mv ./gh_latest/tasmota32-lvgl.* ./firmware/release/
         [ ! -f ./gh_latest/tasmota32-web*.* ] || mv ./gh_latest/tasmota32-web*.* ./firmware/release/
         [ ! -f ./gh_latest/tasmota32-zbbrdgpro.* ] || mv ./gh_latest/tasmota32-zbbrdgpro.* ./firmware/release/
+        [ ! -f ./gh_latest/tasmota32-matter.* ] || mv ./gh_latest/tasmota32-matter.* ./firmware/release
         [ ! -f ./gh_latest/tasmota32-nspanel.* ] || mv ./gh_latest/tasmota32-nspanel.* ./firmware/release/
         [ ! -f ./gh_latest/tasmota32-odroidgo.* ] || mv ./gh_latest/tasmota32-odroidgo.* ./firmware/release/
         [ ! -f ./gh_latest/tasmota32-core2.* ] || mv ./gh_latest/tasmota32-core2.* ./firmware/release/
