@@ -1,4 +1,4 @@
-[![Tasmota install](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+
 
 ![Tasmota logo](https://github.com/arendst/Tasmota/blob/development/tools/logo/TASMOTA_FullLogo_Vector.svg#gh-light-mode-only)![Tasmota logo](https://github.com/arendst/Tasmota/blob/development/tools/logo/TASMOTA_FullLogo_Vector_White.svg#gh-dark-mode-only)
 
